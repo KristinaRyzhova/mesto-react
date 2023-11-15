@@ -1,28 +1,35 @@
 import React from 'react';
 import api from '../utils/Api';
+import Card from './Card';
+import {useState, useEffect} from "react";
 
-function Main(props) {
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
   const [userName, setUserName] = React.useState("");
   const [userDescription, setUserDescription] = React.useState("");
   const [userAvatar, setUserAvatar] = React.useState("");
-  /* const [cards, setCards] = useState([]); */
+  const [cards, setCards] = useState([]);
 
-const getUserInfo = () => {
-  api.getUserApi()
+  useEffect(() => {
+    api.getUserApi()
     .then((user) => {
       setUserName(user.name);
       setUserDescription(user.about);
       setUserAvatar(user.avatar);
     }
   )
-  .catch((error) => {
-      console.log(error);
+    .catch((err) => {
+      console.log(err);
     }
   )
-}
 
-React.useEffect(() => {
-    getUserInfo();
+  api.getCardsApi()
+    .then((data) => {
+      setCards(data)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
   }, []);
 
   return (
@@ -32,7 +39,7 @@ React.useEffect(() => {
           <button 
             className="profile__new-avatar" 
             type="button" 
-            onClick={props.onEditAvatar}
+            onClick={onEditAvatar}
              />
           <img 
             className="profile__avatar" 
@@ -46,7 +53,7 @@ React.useEffect(() => {
                 className="profile__edit-button" 
                 type="button" 
                 aria-label="Редактировать профиль" 
-                onClick={props.onEditProfile} />
+                onClick={onEditProfile} />
             </div>
             <h2 className="profile__subtitle">{userDescription}</h2>
           </div>
@@ -54,11 +61,18 @@ React.useEffect(() => {
             className="profile__add-button" 
             type="button" 
             aria-label="Добавить фото" 
-            onClick={props.onAddPlace}
-            />
-          </section>
-          <section className="elements">
+            onClick={onAddPlace}
+          />
+        </section>
+        <section className="elements">
           <ul className="elements__list">
+            {cards.map((card) => (
+              <Card
+                key={card._id}
+                card={card}
+                onCardClick={onCardClick}
+              />
+            ))}
           </ul>
         </section>
       </main>

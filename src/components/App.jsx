@@ -5,13 +5,12 @@ import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 
-
-
-
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);  
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(false)
+  
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -25,12 +24,16 @@ function App() {
     setIsAddPlacePopupOpen(true);
   };
 
+  function handleCardClick(selectedCard) {
+    setSelectedCard(selectedCard)
+  }
+
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setSelectedCard(false);
   }
-
   
   return (
     <>
@@ -40,8 +43,7 @@ function App() {
           onEditAvatar={handleEditAvatarClick}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
-          
-          /* onCardClick={handleCardClick} */
+          onCardClick={handleCardClick}
         />          
         <Footer />
         
@@ -50,7 +52,7 @@ function App() {
           title="Редактировать профиль"
           button="Сохранить"
           isOpen={isEditProfilePopupOpen} 
-          onClose={closeAllPopups} ////???
+          onClose={closeAllPopups}
         >
           <>
             <input className="popup__input popup__input_type_name" id="username" type="text" name="username" placeholder="Ваше имя" minLength={2} maxLength={40} required />
@@ -92,14 +94,15 @@ function App() {
           name="delete" 
           title="Вы уверены?" 
           button="Да"
-          /* isOpen={isEditAvatarPopupOpen} ///??? */
           onClose={closeAllPopups}
         >
         </PopupWithForm>
-        <ImagePopup />
+        <ImagePopup 
+          card={selectedCard}
+          isOpen={selectedCard}
+          onClose={closeAllPopups}
+        />
       </div>
-        
-        {/* <template id="element-place-cards" /> */}
     </>
   )
 }
