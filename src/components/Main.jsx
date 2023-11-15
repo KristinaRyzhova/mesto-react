@@ -10,26 +10,16 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    api.getUserApi()
-    .then((user) => {
-      setUserName(user.name);
-      setUserDescription(user.about);
-      setUserAvatar(user.avatar);
-    }
-  )
-    .catch((err) => {
-      console.log(err);
-    }
-  )
-
-  api.getCardsApi()
-    .then((data) => {
-      setCards(data)
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-
+    api.getAllInfo()
+      .then(([user, cards]) => {
+        setUserName(user.name);
+        setUserDescription(user.about);
+        setUserAvatar(user.avatar);
+        setCards(cards)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }, []);
 
   return (
@@ -67,11 +57,13 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
         <section className="elements">
           <ul className="elements__list">
             {cards.map((card) => (
-              <Card
-                key={card._id}
-                card={card}
-                onCardClick={onCardClick}
-              />
+              <li className="element" key={card._id}>
+                <Card
+                  key={card._id}
+                  card={card}
+                  onCardClick={onCardClick}
+                />
+              </li>
             ))}
           </ul>
         </section>

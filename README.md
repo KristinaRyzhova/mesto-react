@@ -1,8 +1,39 @@
-# React + Vite
+# Проект: Mesto (React)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+__________________________________________________________________
 
-Currently, two official plugins are available:
+**Описание проекта**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Проектная работа 10 - 12 спринтов на курсе "Веб разработчик" от Яндекс Практикум.
+Проект представляет собой интерактивную страницу, созданную с использованием React, на которой можно добавлять свои фотографии, удалять их, ставить лайки, а также редактировать профиль и аватар пользователя.
+
+**Применяемые технологии:**
+
+   - [x] HTML5;
+   - [x] CSS3;
+   - [x] JavaScript;
+   - [x] Flexbox;
+   - [x] Grid Layout;
+   - [x] Media Queries;
+   - [x] Методология БЭМ: Nested;
+   - [x] Webpack;
+   - [x] GitHubPages;
+   - [x] API;
+   - [x] React;
+   - [x] JSX.
+
+   **10 спринт** - портирование на «Реакт»:
+   - портированы разметка и стили;
+   - вынесены компоненты: Header, Main, Footer;
+   - вынесен общий компонент попапов PopupWithForm и попап ImagePopup;
+   - было подключено Api;
+   - был вынесен компонент Card.
+
+
+
+**WWW**
+   - (будет позже)
+________________________________________________________________
+
+## Автор:
+Кристина Рыжова / @kirillki.travel

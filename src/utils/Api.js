@@ -8,11 +8,11 @@ export class Api {
     return res.ok ? res.json() : res.json().then(err => Promise.reject(err))
   };
 
-  /* getAllInfo() {
-    return Promise.all([this.getUserApi(), this.getCardsApi()])
+  getAllInfo() {
+    return Promise.all([this.getProfileInfo(), this.getCards()])
   }
- */
-  getUserApi() {
+
+  getProfileInfo() {
     return fetch(`${this._url}/users/me`, {
       method: 'GET',
       headers: this._headers
@@ -20,7 +20,7 @@ export class Api {
       .then(this._onResponse)
   };
 
-  getCardsApi() {
+  getCards() {
     return fetch(`${this._url}/cards`, {
       method: 'GET',
       headers: this._headers
