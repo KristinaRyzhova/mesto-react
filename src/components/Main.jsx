@@ -58,7 +58,6 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
             {cards.map((card) => (
               <li className="element" key={card._id}>
                 <Card
-                  key={card._id}
                   card={card}
                   onCardClick={onCardClick}
                 />
