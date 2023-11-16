@@ -4,9 +4,8 @@
   border-radius: 50%;
   margin: 0 auto;
   padding: 0;
-  align-self: center;
-  object-fit: cover;
-  object-position: center;
+  background-position: center;
+  background-size: cover;
 }
 
 @media screen and (min-width: 880px) {
