@@ -1,27 +1,12 @@
 import React from 'react';
-import api from '../utils/Api';
+import {useContext} from "react";
+import CurrentUserContext from '../contexts/CurrentUserContext.js';
 import Card from './Card';
-import {useState, useEffect} from "react";
 
-function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    api.getAllInfo()
-      .then(([user, cards]) => {
-        setUserName(user.name);
-        setUserDescription(user.about);
-        setUserAvatar(user.avatar);
-        setCards(cards)
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }, []);
-
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, cards }) {
+  
+  const currentUser = useContext(CurrentUserContext);
+  
   return (
     <>
       <main className="main">
@@ -31,20 +16,21 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
             type="button" 
             onClick={onEditAvatar}
              />
-          <div 
+          <img  
             className="profile__avatar"
-            style={{ backgroundImage: `url(${userAvatar})` }}
+            src={currentUser.avatar}
+            alt='Фото профиля'
           />
           <div className="profile__info">
             <div className="profile__title">
-              <h1 className="profile__name">{userName}</h1>
+              <h1 className="profile__name">{currentUser.name}</h1>
               <button 
                 className="profile__edit-button" 
                 type="button" 
                 aria-label="Редактировать профиль" 
                 onClick={onEditProfile} />
             </div>
-            <h2 className="profile__subtitle">{userDescription}</h2>
+            <h2 className="profile__subtitle">{currentUser.about}</h2>
           </div>
           <button 
             className="profile__add-button" 
