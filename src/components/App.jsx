@@ -50,17 +50,40 @@ function App() {
     setSelectedCard({});
   }
 
-  
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  function handleCardDelete(card) {
+    api.removeCard(card._id)
+      .then(() => {
+        setCards((cards) => cards.filter((item) => item._id !== card._id));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
         <Header />
         <Main 
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          cards={cards}
+          onEditAvatar={handleEditAvatarClick} 
+          onEditProfile={handleEditProfileClick} 
+          onAddPlace={handleAddPlaceClick} 
+          onCardClick={handleCardClick} 
+          onCardLike={handleCardLike} 
+          onCardDelete={handleCardDelete} 
+          cards={cards} 
         />          
         <Footer />
         
