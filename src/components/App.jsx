@@ -7,6 +7,8 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import EditProfilePopup from './EditProfilePopup.jsx';
+import EditAvatarPopup from './EditAvatarPopup.jsx';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
@@ -15,6 +17,7 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     api.getAllInfo()
@@ -72,6 +75,32 @@ function App() {
       });
   }
 
+  function handleUpdateUser(data) {
+    setIsLoading(true);
+    api.editUserInfo(data)
+      .then((user) => {
+        setCurrentUser(user);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => setIsLoading(false));
+  }
+
+  function handleUpdateAvatar(data) {
+    setIsLoading(true)
+    api.editUserAvatar(data)
+      .then((avatar) => {
+        setCurrentUser(avatar)
+        closeAllPopups()
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => setIsLoading(false))
+}
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
@@ -87,18 +116,24 @@ function App() {
         />          
         <Footer />
         
-        <PopupWithForm
-          name="edit-profile"
-          title="Редактировать профиль"
-          button="Сохранить"
+        <EditProfilePopup 
           isOpen={isEditProfilePopupOpen} 
-          onClose={closeAllPopups}
-        >
-          <input className="popup__input popup__input_type_name" id="username" type="text" name="username" placeholder="Ваше имя" minLength={2} maxLength={40} required />
-          <span className="popup__error popup__error_visible" id="username-error" />
-          <input className="popup__input popup__input_type_info" id="userinfo" type="text" name="userinfo" placeholder="О себе" minLength={2} maxLength={200} required />
-          <span className="popup__error popup__error_visible" id="userinfo-error" />
-        </PopupWithForm>
+          onClose={closeAllPopups} 
+          onUpdateUser={handleUpdateUser} 
+          onLoading={isLoading} 
+        />
+
+        <EditAvatarPopup 
+          isOpen={isEditAvatarPopupOpen} 
+          onClose={closeAllPopups} 
+          onUpdateAvatar={handleUpdateAvatar} 
+          onLoading={isLoading} 
+        />
+
+
+
+
+
 
         <PopupWithForm
           name="add-place"
@@ -111,17 +146,6 @@ function App() {
           <span className="popup__error popup__error_visible" id="placename-error" />
           <input className="popup__input popup__input_type_placelink" id="placelink" type="url" name="placelink" placeholder="Ссылка на картинку" required />
           <span className="popup__error popup__error_visible" id="placelink-error" />
-        </PopupWithForm>
-
-        <PopupWithForm
-          name="new-avatar"
-          title="Обновить аватар"
-          button="Сохранить"
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-        >
-          <input className="popup__input popup__input_type_avatar" id="avatar" type="url" name="avatar" placeholder="Ссылка на аватар" required />
-          <span className="popup__error popup__error_visible" id="avatar-error" />
         </PopupWithForm>
 
         <PopupWithForm

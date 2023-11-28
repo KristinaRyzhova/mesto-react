@@ -33,8 +33,8 @@ export class Api {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        name: data.username,
-        about: data.userinfo,
+        name: data.name,
+        about: data.about,
       }),
     })
       .then(this._onResponse)
