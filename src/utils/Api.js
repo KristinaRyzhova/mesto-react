@@ -53,15 +53,12 @@ export class Api {
 
   addNewCardPlace(data) {
     return fetch(`${this._url}/cards`, {
-      method: 'POST',
+      method: "POST",
       headers: this._headers,
-      body: JSON.stringify({
-        name: data.placename,
-        link: data.placelink
-      })
+      body: JSON.stringify(data),
     })
       .then(this._onResponse)
-  };
+  }
 
   changeLikeCardStatus(cardId, isLiked) {
     return fetch(`${this._url}/cards/${cardId}/likes`, {

@@ -9,6 +9,7 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup.jsx';
 import EditAvatarPopup from './EditAvatarPopup.jsx';
+import AddPlacePopup from './AddPlacePopup.jsx';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
@@ -16,8 +17,8 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setCurrentUser] = useState({});
-  const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     api.getAllInfo()
@@ -92,18 +93,31 @@ function App() {
     setIsLoading(true)
     api.editUserAvatar(data)
       .then((avatar) => {
-        setCurrentUser(avatar)
+        setCurrentUser(avatar);
         closeAllPopups()
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => setIsLoading(false))
-}
+  }
+  
+  function handleAddPlaceSubmit(data) {
+    setIsLoading(true)
+    api.addNewCardPlace(data)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups()
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => setIsLoading(false))
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-        <div className="page">
+      <div className="page">
         <Header />
         <Main 
           onEditAvatar={handleEditAvatarClick} 
@@ -130,23 +144,12 @@ function App() {
           onLoading={isLoading} 
         />
 
-
-
-
-
-
-        <PopupWithForm
-          name="add-place"
-          title="Новое место"
-          button="Создать"
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-        >
-          <input className="popup__input popup__input_type_placename" id="placename" type="text" name="placename" placeholder="Название" minLength={2} maxLength={30} required />
-          <span className="popup__error popup__error_visible" id="placename-error" />
-          <input className="popup__input popup__input_type_placelink" id="placelink" type="url" name="placelink" placeholder="Ссылка на картинку" required />
-          <span className="popup__error popup__error_visible" id="placelink-error" />
-        </PopupWithForm>
+        <AddPlacePopup 
+          isOpen={isAddPlacePopupOpen} 
+          onClose={closeAllPopups} 
+          onAddPlace={handleAddPlaceSubmit}
+          onLoading={isLoading} 
+        />
 
         <PopupWithForm
           name="delete" 
@@ -154,6 +157,7 @@ function App() {
           button="Да"
           onClose={closeAllPopups}
         />
+
         <ImagePopup 
           card={selectedCard}
           onClose={closeAllPopups}

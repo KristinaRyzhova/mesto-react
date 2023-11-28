@@ -36,7 +36,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, cards, onCardClick, onC
             className="profile__add-button" 
             type="button" 
             aria-label="Добавить фото" 
-            onClick={onAddPlace}
+            onClick={onAddPlace} 
           />
         </section>
         <section className="elements">
