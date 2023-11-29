@@ -2,7 +2,7 @@ import React from 'react';
 import {useContext} from 'react';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
-function Card({ card, onCardClick, onCardLike, onCardDelete }) {
+function Card({ card, onCardClick, onCardLike, onDeletePopup, onCardDelete }) {
 
   const currentUser = useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
@@ -12,7 +12,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
     `element__like ${isLiked && 'element__like_active'}` 
   );
 
-  function handleClick() {
+  const handleClick = () => {
     onCardClick(card);
   };
 
@@ -20,8 +20,9 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
     onCardLike(card);
   };
 
-  function handleDeleteClick() {
-    onCardDelete(card);
+  const handleDeleteClick = () => {
+    onDeletePopup(true);
+    onCardDelete(card)
   };
 
   return (
@@ -40,13 +41,13 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
         </div>
       </div>
       {isOwn && <button 
-        className="element__delite" 
+        className="element__delete" 
         type="button" 
         aria-label="удалить" 
         onClick={handleDeleteClick} />
       }
     </>
-  )
-}
+  );
+};
 
 export default Card;

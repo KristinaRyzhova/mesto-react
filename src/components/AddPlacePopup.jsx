@@ -1,10 +1,15 @@
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import PopupWithForm from './PopupWithForm.jsx';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
   const [nameNewCard, setNameNewCard] = useState("");
   const [linkNewCard, setLinkNewCard] = useState("");
+
+  useEffect(() => {
+    setNameNewCard("")
+    setLinkNewCard("")
+  }, [isOpen])
     
   function handleNewCardNameChange(evt) {
     setNameNewCard(evt.target.value);
@@ -29,7 +34,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
       button={onLoading ? `Создание...` : `Создать`}
       isOpen={isOpen}
       onClose={onClose} 
-      onSubmit={handleAddNewCardSubmit}
+      onSubmit={handleAddNewCardSubmit} 
     >
       <input 
         className="popup__input popup__input_type_placename" 
@@ -41,7 +46,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
         maxLength={30} 
         required 
         value={nameNewCard || ""} 
-        onChange={handleNewCardNameChange}
+        onChange={handleNewCardNameChange} 
       />
       <span className="popup__error popup__error_visible" id="placename-error" />
       <input 
@@ -52,11 +57,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
         placeholder="Ссылка на картинку" 
         required 
         value={linkNewCard || ""} 
-        onChange={handleNewCardLinkChange}
+        onChange={handleNewCardLinkChange} 
       />
       <span className="popup__error popup__error_visible" id="placelink-error" />
     </PopupWithForm>
-  )
-}
+  );
+};
 
 export default AddPlacePopup;

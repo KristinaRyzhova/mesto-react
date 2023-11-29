@@ -7,7 +7,7 @@ function Header() {
         <img src={Logo} alt="логотип проекта" className="header__logo" />
       </header>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

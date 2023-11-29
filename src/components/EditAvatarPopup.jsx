@@ -32,7 +32,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, onLoading }) {
       />
       <span className="popup__error popup__error_visible" id="avatar-error" />
     </PopupWithForm>
-  )
-}
+  );
+};
 
 export default EditAvatarPopup;
