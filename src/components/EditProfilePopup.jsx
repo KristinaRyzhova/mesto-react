@@ -4,7 +4,7 @@ import PopupWithForm from './PopupWithForm.jsx';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoading }) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoading, onClickOverlay }) {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -13,7 +13,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoading }) {
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
   function handleChangeName(evt) {
     setName(evt.target.value)
@@ -39,6 +39,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoading }) {
       onClose={onClose} 
       onSubmit={handleSumbitEditProfile} 
       button={onLoading ? `Сохранение...` : `Сохранить`} 
+      onClickOverlay={onClickOverlay} 
     >
       <input 
         className="popup__input popup__input_type_name" 

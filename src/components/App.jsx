@@ -61,41 +61,21 @@ function App() {
     setSelectedCard({});
   };
 
-  const isOpenPopup =
-    isEditAvatarPopupOpen ||
-    isEditProfilePopupOpen ||
-    isAddPlacePopupOpen ||
-    isDeleteCardPopupOpen ||
-    selectedCard;
-
   useEffect(() => {
-    function closePopupByEscape(evt) {
-      if (evt.key === "Escape") {
+    const closeByEsc = (evt) => {
+      if(evt.key === "Escape"){
         closeAllPopups();
       };
     };
-    if (isOpenPopup) {
-      document.addEventListener('keydown', closePopupByEscape);
-    };
-    return () => {
-      document.removeEventListener('keydown', closePopupByEscape);
-    };
-  }, [isOpenPopup]);
+    window.addEventListener('keydown', closeByEsc)
+    return () => window.removeEventListener('keydown', closeByEsc)
+  }, []);
 
-
-  useEffect(() => {
-    function closePopupByOverley(evt) {
-      if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-button')) {
-          closeAllPopups();
-      };
+  function closePopupByOverley(evt) {
+    if (evt.target === evt.currentTarget) {
+      closeAllPopups();
     };
-    if (isOpenPopup) {
-      document.addEventListener('mousedown', closePopupByOverley);
-    };
-    return () => {
-      document.removeEventListener('mousedown', closePopupByOverley);
-    };
-  }, [isOpenPopup]);
+  };
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -181,18 +161,21 @@ function App() {
           onClose={closeAllPopups} 
           onUpdateUser={handleUpdateUser} 
           onLoading={isLoading} 
+          onClickOverlay={closePopupByOverley} 
         />
         <EditAvatarPopup 
           isOpen={isEditAvatarPopupOpen} 
           onClose={closeAllPopups} 
           onUpdateAvatar={handleUpdateAvatar} 
           onLoading={isLoading} 
+          onClickOverlay={closePopupByOverley} 
         />
         <AddPlacePopup 
           isOpen={isAddPlacePopupOpen} 
           onClose={closeAllPopups} 
           onAddPlace={handleAddPlaceSubmit}
           onLoading={isLoading} 
+          onClickOverlay={closePopupByOverley} 
         />
         <DeleteCardPopup 
           isOpen={isDeleteCardPopupOpen} 
@@ -200,10 +183,12 @@ function App() {
           card={deletedCard}
           onCardDelete={handleCardDelete} 
           onClose={closeAllPopups} 
+          onClickOverlay={closePopupByOverley} 
         />
         <ImagePopup 
           card={selectedCard}
-          onClose={closeAllPopups}
+          onClose={closeAllPopups} 
+          onClickOverlay={closePopupByOverley} 
         />
       </div>
     </CurrentUserContext.Provider>

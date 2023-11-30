@@ -2,7 +2,7 @@ import React from 'react';
 import {useRef} from 'react';
 import PopupWithForm from './PopupWithForm.jsx';
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, onLoading }) {
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, onLoading, onClickOverlay }) {
   const avatarInputRef = useRef();
 
   function handleSumbit(evt) {
@@ -12,6 +12,10 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, onLoading }) {
     });
   };
 
+  React.useEffect(() => {
+    avatarInputRef.current.value = "";
+  }, [isOpen]);
+
   return (
     <PopupWithForm
       name="new-avatar" 
@@ -20,6 +24,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, onLoading }) {
       isOpen={isOpen} 
       onClose={onClose} 
       onSubmit={handleSumbit} 
+      onClickOverlay={onClickOverlay} 
     >
       <input 
         className="popup__input popup__input_type_avatar" 
