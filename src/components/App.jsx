@@ -62,31 +62,32 @@ function App() {
   };
 // variant 1
 
-  /* const isOpenPopup = 
+  const isOpenPopup = 
     isEditAvatarPopupOpen || 
     isEditProfilePopupOpen || 
     isAddPlacePopupOpen || 
     isDeleteCardPopupOpen || 
     selectedCard; 
 
-  useEffect(() => { 
+  useEffect(() => {
     function closePopupByEscape(evt) { 
       if (evt.key === "Escape") {
         console.log("Escape");
         closeAllPopups(); 
       };
     };
-    if (isOpenPopup) {
+
+    if (isOpenPopup) { 
       document.addEventListener('keydown', closePopupByEscape);
-    };
-    return () => {
-      document.removeEventListener('keydown', closePopupByEscape);
-    };
-  }, [isOpenPopup]); */
+      return () => {
+        document.removeEventListener('keydown', closePopupByEscape)
+     }
+    }    
+  }, [isOpenPopup]);
 
   //variant 2
 
-  useEffect(() => {
+ /*  useEffect(() => {
     const closeByEsc = (evt) => {
       if(evt.key === "Escape"){
         console.log("Escape");
@@ -95,7 +96,7 @@ function App() {
     };
     window.addEventListener('keydown', closeByEsc)
     return () => window.removeEventListener('keydown', closeByEsc)
-  }, []);
+  }, []); */
   
 ///////////
 
