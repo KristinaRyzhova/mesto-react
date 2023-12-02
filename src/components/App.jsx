@@ -1,5 +1,5 @@
 import React from 'react';
-import {useEffect, useState, useCallback} from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 import api from '../utils/Api';
 import Header from './Header';
@@ -13,13 +13,13 @@ import DeleteCardPopup from './DeleteCardPopup.jsx';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);  
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({});
-  const [currentUser, setCurrentUser] = useState({});
+  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [deletedCard, setDeletedCard] = useState({});
+  const [deletedCard, setDeletedCard] = useState(null);
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function App() {
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   };
-  
+
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
   };
@@ -58,48 +58,30 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsDeleteCardPopupOpen(false);
-    setSelectedCard({});
+    setSelectedCard(null);
   };
-// variant 1
 
   const isOpenPopup = 
     isEditAvatarPopupOpen || 
     isEditProfilePopupOpen || 
     isAddPlacePopupOpen || 
     isDeleteCardPopupOpen || 
-    selectedCard; 
+    selectedCard;
+
+  const closePopupByEscape = useCallback(function (evt) {
+    if (evt.key === "Escape") {
+      console.log("Escape");
+      closeAllPopups();
+    }
+  },[]);
 
   useEffect(() => {
-    function closePopupByEscape(evt) { 
-      if (evt.key === "Escape") {
-        console.log("Escape");
-        closeAllPopups(); 
-      };
-    };
-
-    if (isOpenPopup) { 
+    if (isOpenPopup) {
       document.addEventListener('keydown', closePopupByEscape);
-      return () => {
-        document.removeEventListener('keydown', closePopupByEscape)
-     }
-    }    
+    } else {
+      document.removeEventListener('keydown', closePopupByEscape)
+    }
   }, [isOpenPopup]);
-
-  //variant 2
-
- /*  useEffect(() => {
-    const closeByEsc = (evt) => {
-      if(evt.key === "Escape"){
-        console.log("Escape");
-        closeAllPopups();
-      };
-    };
-    window.addEventListener('keydown', closeByEsc)
-    return () => window.removeEventListener('keydown', closeByEsc)
-  }, []); */
-  
-///////////
-
 
   function closePopupByOverley(evt) {
     if (evt.target === evt.currentTarget) {
@@ -156,7 +138,7 @@ function App() {
       })
       .finally(() => setIsLoading(false));
   };
-  
+
   function handleAddPlaceSubmit(data) {
     setIsLoading(true)
     api.addNewCardPlace(data)
@@ -174,50 +156,50 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
-        <Main 
-          onEditAvatar={handleEditAvatarClick} 
-          onEditProfile={handleEditProfileClick} 
-          onAddPlace={handleAddPlaceClick} 
-          onCardClick={handleCardClick} 
-          onCardLike={handleCardLike} 
-          onDeletePopup={handleDeleteCardClick} 
-          onDeletedCard={setDeletedCard} 
-          cards={cards} 
-        />          
+        <Main
+          onEditAvatar={handleEditAvatarClick}
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onCardClick={handleCardClick}
+          onCardLike={handleCardLike}
+          onDeletePopup={handleDeleteCardClick}
+          onDeletedCard={setDeletedCard}
+          cards={cards}
+        />
         <Footer />
-        <EditProfilePopup 
-          isOpen={isEditProfilePopupOpen} 
-          onClose={closeAllPopups} 
-          onUpdateUser={handleUpdateUser} 
-          onLoading={isLoading} 
-          onClickOverlay={closePopupByOverley} 
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+          onLoading={isLoading}
+          onClickOverlay={closePopupByOverley}
         />
-        <EditAvatarPopup 
-          isOpen={isEditAvatarPopupOpen} 
-          onClose={closeAllPopups} 
-          onUpdateAvatar={handleUpdateAvatar} 
-          onLoading={isLoading} 
-          onClickOverlay={closePopupByOverley} 
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+          onLoading={isLoading}
+          onClickOverlay={closePopupByOverley}
         />
-        <AddPlacePopup 
-          isOpen={isAddPlacePopupOpen} 
-          onClose={closeAllPopups} 
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
-          onLoading={isLoading} 
-          onClickOverlay={closePopupByOverley} 
+          onLoading={isLoading}
+          onClickOverlay={closePopupByOverley}
         />
-        <DeleteCardPopup 
-          isOpen={isDeleteCardPopupOpen} 
-          onLoading={isLoading} 
+        <DeleteCardPopup
+          isOpen={isDeleteCardPopupOpen}
+          onLoading={isLoading}
           card={deletedCard}
-          onCardDelete={handleCardDelete} 
-          onClose={closeAllPopups} 
-          onClickOverlay={closePopupByOverley} 
+          onCardDelete={handleCardDelete}
+          onClose={closeAllPopups}
+          onClickOverlay={closePopupByOverley}
         />
-        <ImagePopup 
+        <ImagePopup
           card={selectedCard}
-          onClose={closeAllPopups} 
-          onClickOverlay={closePopupByOverley} 
+          onClose={closeAllPopups}
+          onClickOverlay={closePopupByOverley}
         />
       </div>
     </CurrentUserContext.Provider>

@@ -27,19 +27,19 @@ function Main({
              />
           <img  
             className="profile__avatar"
-            src={currentUser.avatar}
+            src={currentUser?.avatar}
             alt='Фото профиля'
           />
           <div className="profile__info">
             <div className="profile__title">
-              <h1 className="profile__name">{currentUser.name}</h1>
+              <h1 className="profile__name">{currentUser?.name}</h1>
               <button 
                 className="profile__edit-button" 
                 type="button" 
                 aria-label="Редактировать профиль" 
                 onClick={onEditProfile} />
             </div>
-            <h2 className="profile__subtitle">{currentUser.about}</h2>
+            <h2 className="profile__subtitle">{currentUser?.about}</h2>
           </div>
           <button 
             className="profile__add-button" 
