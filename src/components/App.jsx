@@ -1,5 +1,5 @@
 import React from 'react';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useCallback} from 'react';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 import api from '../utils/Api';
 import Header from './Header';
@@ -50,7 +50,7 @@ function App() {
   };
 
   function handleCardClick(selectedCard) {
-    setSelectedCard(selectedCard)
+    setSelectedCard(selectedCard);
   };
 
   function closeAllPopups() {
@@ -60,26 +60,54 @@ function App() {
     setIsDeleteCardPopupOpen(false);
     setSelectedCard({});
   };
+// variant 1
+
+  /* const isOpenPopup = 
+    isEditAvatarPopupOpen || 
+    isEditProfilePopupOpen || 
+    isAddPlacePopupOpen || 
+    isDeleteCardPopupOpen || 
+    selectedCard; 
+
+  useEffect(() => { 
+    function closePopupByEscape(evt) { 
+      if (evt.key === "Escape") {
+        console.log("Escape");
+        closeAllPopups(); 
+      };
+    };
+    if (isOpenPopup) {
+      document.addEventListener('keydown', closePopupByEscape);
+    };
+    return () => {
+      document.removeEventListener('keydown', closePopupByEscape);
+    };
+  }, [isOpenPopup]); */
+
+  //variant 2
 
   useEffect(() => {
     const closeByEsc = (evt) => {
       if(evt.key === "Escape"){
+        console.log("Escape");
         closeAllPopups();
       };
     };
     window.addEventListener('keydown', closeByEsc)
     return () => window.removeEventListener('keydown', closeByEsc)
   }, []);
+  
+///////////
+
 
   function closePopupByOverley(evt) {
     if (evt.target === evt.currentTarget) {
+      console.log("mouse");
       closeAllPopups();
     };
   };
-
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    
     api.changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
